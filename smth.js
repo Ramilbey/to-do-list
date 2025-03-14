@@ -1,6 +1,11 @@
 // Initialize the 'calculate' object from localStorage or use default values if it doesn't exist
 let calculate = JSON.parse(localStorage.getItem('calculate')) || { wins: 0, losses: 0, ties: 0 };
 
+// Update the UI with stored values on page load
+document.getElementById('wins').textContent = calculate.wins;
+document.getElementById('losses').textContent = calculate.losses;
+document.getElementById('ties').textContent = calculate.ties;
+
 // Function to play the game
 function playGame(playerMove) {
   const computerMove = pickComputerMover(); // Get computer's move
@@ -46,7 +51,7 @@ function playGame(playerMove) {
   document.getElementById('losses').textContent = calculate.losses;
   document.getElementById('ties').textContent = calculate.ties;
 
-  // Correctly save the updated 'calculate' object to localStorage
+  // Save the updated 'calculate' object to localStorage
   localStorage.setItem('calculate', JSON.stringify(calculate));
 
   // Show the result to the user in the alert box
@@ -68,3 +73,18 @@ function pickComputerMover() {
   }
   return computerMove;
 }
+function resetGame() {
+    // Reset the 'calculate' object
+    calculate.wins = 0;
+    calculate.losses = 0;
+    calculate.ties = 0;
+  
+    // Update the UI
+    document.getElementById('wins').textContent = calculate.wins;
+    document.getElementById('losses').textContent = calculate.losses;
+    document.getElementById('ties').textContent = calculate.ties;
+  
+    // Clear the localStorage data
+    localStorage.removeItem('calculate');
+  }
+  
