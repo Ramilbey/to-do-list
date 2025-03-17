@@ -1,38 +1,73 @@
-const toDoList = [
-//   {
-//     name: "make dinner",
-//     dueDate: "2022-12-02",
-//   },
-//   {
-//     name: "watch youtube",
-//     dueDate: "2024-12-03",
-//   },
-];
-
-function renderToDo() {
-  let toDoListHtml = "";
-  for (let i = 0; i < toDoList.length; i++) {
-    const todoObject = toDoList[i];
-    const { name, dueDate } = todoObject;
-    const html = `<p>
-        ${name} ${dueDate} 
-        <button onclick = "
-        toDoList.splice(${i}, 1);
-        renderToDo()
-        ">Delete</button>
-        </p>`;
-    toDoListHtml += html;
+let toDoList = [
+    // Example data
+    // {
+    //   name: "make dinner",
+    //   dueDate: "2022-12-02",
+    // },
+    // {
+    //   name: "watch youtube",
+    //   dueDate: "2024-12-03",
+    // },
+  ];
+  
+  // Function to render the to-do list
+  function renderToDo() {
+    let toDoListHtml = "";
+    for (let i = 0; i < toDoList.length; i++) {
+      const todoObject = toDoList[i];
+      const { name, dueDate } = todoObject;
+      const html = `<p>
+          ${name} ${dueDate} 
+          <button onclick="deleteToDo(${i})">Delete</button>
+          </p>`;
+      toDoListHtml += html;
+    }
+    document.querySelector(".js-html-button").innerHTML = toDoListHtml;
   }
-  const htmlButton = (document.querySelector(".js-html-button").innerHTML =
-    toDoListHtml);
-}
-
-function addToDo() {
-  const inputElement = document.querySelector(".js-name-input");
-  const name = inputElement.value;
-  const dateInputElement = document.querySelector(".js-date");
-  const dueDate = dateInputElement.value;
-  toDoList.push({ name, dueDate });
-  inputElement.value = "";
-  renderToDo();
-}
+  
+  // Function to add a new to-do
+  function addToDo() {
+    const inputElement = document.querySelector(".js-name-input");
+    const dateInputElement = document.querySelector(".js-date");
+  
+    const name = inputElement.value;
+    const dueDate = dateInputElement.value;
+  
+    // Add the new to-do item to the list
+    toDoList.push({ name, dueDate });
+  
+    // Save the updated to-do list to localStorage
+    localStorage.setItem("toDoList", JSON.stringify(toDoList));
+  
+    // Clear the input fields
+    inputElement.value = "";
+    dateInputElement.value = "";
+  
+    // Re-render the list
+    renderToDo();
+  }
+  
+  // Function to delete a to-do item
+  function deleteToDo(index) {
+    // Remove the to-do item from the list
+    toDoList.splice(index, 1);
+  
+    // Update localStorage with the new to-do list
+    localStorage.setItem("toDoList", JSON.stringify(toDoList));
+  
+    // Re-render the list
+    renderToDo();
+  }
+  
+  // Function to load the to-do list from localStorage on page load
+  function loadToDoList() {
+    const storedToDoList = localStorage.getItem("toDoList");
+    if (storedToDoList) {
+      toDoList = JSON.parse(storedToDoList); // Parse the JSON string into an array
+      renderToDo(); // Render the list from localStorage
+    }
+  }
+  
+  // Call loadToDoList() on page load to restore the list
+  window.onload = loadToDoList;
+  
