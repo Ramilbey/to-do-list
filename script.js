@@ -1,13 +1,5 @@
 let toDoList = [
-    // Example data
-    // {
-    //   name: "make dinner",
-    //   dueDate: "2022-12-02",
-    // },
-    // {
-    //   name: "watch youtube",
-    //   dueDate: "2024-12-03",
-    // },
+    
   ];
   
   // Function to render the to-do list
@@ -18,12 +10,24 @@ let toDoList = [
       const { name, dueDate } = todoObject;
       const html = `<p>
           ${name} ${dueDate} 
-          <button onclick="deleteToDo(${i})">Delete</button>
+          <button class = "js-delete-button">Delete</button>
           </p>`;
       toDoListHtml += html;
     }
-    document.querySelector(".js-html-button").innerHTML = toDoListHtml;
-  }
+      document.querySelector(".js-html-button").innerHTML = toDoListHtml;
+      document.querySelectorAll('.js-delete-button').forEach((deleteButton, index) => {
+          deleteButton.addEventListener('click', () => {
+              toDoList.splice(index, 1)
+              deleteToDo()
+              renderToDo()
+          })
+          
+      })
+
+}
+document.querySelector('.js-addToDo-button').addEventListener('click', () => {
+      addToDo()
+  })
   
   // Function to add a new to-do
   function addToDo() {
